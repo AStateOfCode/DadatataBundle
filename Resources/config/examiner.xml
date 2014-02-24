@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="asoc_dadatata.metadata.examiner.class">Asoc\Dadatata\Metadata\Examiner</parameter>
+    </parameters>
+
+    <services>
+        <service id="asoc_dadatata.metadata.mimetypeguesser"
+                class="Asoc\Dadatata\Metadata\MimeTypeGuesser"
+                public="false">
+        </service>
+        <service id="asoc_dadatata.metadata.extensiontypeguesser"
+                 class="Asoc\Dadatata\Metadata\ExtensionTypeGuesser"
+                 public="false">
+        </service>
+
+        <service id="asoc_dadatata.metadata.examiner"
+                 class="%asoc_dadatata.metadata.examiner.class%">
+            <argument type="collection">
+                <argument type="service" id="asoc_dadatata.metadata.extensiontypeguesser"/>
+                <argument type="service" id="asoc_dadatata.metadata.mimetypeguesser"/>
+            </argument>
+            <argument type="collection"/><!-- reader collection -->
+        </service>
+    </services>
+</container>

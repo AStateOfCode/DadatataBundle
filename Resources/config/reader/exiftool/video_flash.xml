@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="asoc_dadatata.metadata.reader.exiftool.video_flash"
+                 class="Asoc\Dadatata\Metadata\Reader\Exiftool\VideoFlash"
+                 public="false">
+            <tag name="asoc_dadatata.metadata_reader"/>
+        </service>
+    </services>
+</container>

@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="asoc_dadatata.filter.ffmpeg.extract.class">Asoc\Dadatata\Filter\FFmpeg\Extract</parameter>
+    </parameters>
+
+    <services>
+        <service id="asoc_dadatata.filter.ffmpeg.extract"
+                 class="Asoc\DadatataBundle\Factory\SimpleFilter">
+            <argument>%asoc_dadatata.filter.ffmpeg.extract.class%</argument>
+            <argument>%asoc_dadatata.tools.ffmpeg%</argument>
+        </service>
+    </services>
+</container>
