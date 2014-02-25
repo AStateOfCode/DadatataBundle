@@ -9,6 +9,7 @@
             "email": "padakuro@gmail.com"
         }
     ],
+    "target-dir": "Asoc/DadatataBundle",
     "autoload": {
         "autoload": {
             "psr-0": {
