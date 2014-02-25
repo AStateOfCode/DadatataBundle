@@ -9,10 +9,12 @@
     </parameters>
 
     <services>
-        <service id="asoc_dadatata.filter.imagemagick.resize"
-                 class="Asoc\DadatataBundle\Factory\SimpleFilter">
-            <argument>%asoc_dadatata.filter.imagemagick.resize.class%</argument>
+        <service id="asoc_dadatata.filter.php.imagine_resize"
+                 class="%asoc_dadatata.filter.imagemagick.resize.class%"
+                 public="false"
+                 abstract="true">
             <argument>%asoc_dadatata.tools.convert%</argument>
+            <tag name="asoc_dadatata.filter" alias="imagemagick_resize"/>
         </service>
     </services>
 </container>
