@@ -10,8 +10,10 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Asoc\\Dadatata": "src/"
+        "autoload": {
+            "psr-0": {
+                "Asoc\\DadatataBundle": ""
+            }
         }
     },
     "require-dev": {
