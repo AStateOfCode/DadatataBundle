@@ -11,12 +11,10 @@
     ],
     "target-dir": "Asoc/DadatataBundle",
     "autoload": {
-        "autoload": {
-            "psr-0": {
-                "Asoc\\DadatataBundle": ""
-            }
+        "psr-0": {
+            "Asoc\\DadatataBundle": ""
         }
-    },
+    }
     "require-dev": {
         "phpunit/phpunit": "~3.7"
     },
