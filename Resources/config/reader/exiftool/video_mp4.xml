@@ -8,7 +8,7 @@
         <service id="asoc_dadatata.metadata.reader.exiftool.video_mp4"
                  class="Asoc\Dadatata\Metadata\Reader\Exiftool\VideoMp4"
                  public="false">
-            <tag name="asoc_dadatata.metadata_reader"/>
+            <tag name="asoc_dadatata.metadata_reader" alias="exiftool_video_mp4"/>
         </service>
     </services>
 </container>

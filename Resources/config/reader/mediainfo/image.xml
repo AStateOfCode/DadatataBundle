@@ -9,7 +9,7 @@
                  class="Asoc\Dadatata\Metadata\Reader\Mediainfo\Image"
                  public="false">
             <argument>%asoc_dadatata.tools.mediainfo%</argument>
-            <tag name="asoc_dadatata.metadata_reader"/>
+            <tag name="asoc_dadatata.metadata_reader" alias="mediainfo_image"/>
         </service>
     </services>
 </container>

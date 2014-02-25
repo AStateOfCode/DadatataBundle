@@ -5,10 +5,11 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="asoc_dadatata.metadata.reader.php.sha1"
-                 class="Asoc\Dadatata\Metadata\Reader\Php\Sha1"
+        <service id="asoc_dadatata.metadata.reader.php.imagine"
+                 class="Asoc\Dadatata\Metadata\Reader\Php\Imagine"
                  public="false">
-            <tag name="asoc_dadatata.metadata_reader" alias="php_sha1"/>
+            <argument type="service" id="asoc_dadatata.tools.php.imagine.driver"/>
+            <tag name="asoc_dadatata.metadata_reader" alias="php_imagine"/>
         </service>
     </services>
 </container>

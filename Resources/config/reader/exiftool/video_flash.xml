@@ -8,7 +8,7 @@
         <service id="asoc_dadatata.metadata.reader.exiftool.video_flash"
                  class="Asoc\Dadatata\Metadata\Reader\Exiftool\VideoFlash"
                  public="false">
-            <tag name="asoc_dadatata.metadata_reader"/>
+            <tag name="asoc_dadatata.metadata_reader" alias="exiftool_video_flash"/>
         </service>
     </services>
 </container>

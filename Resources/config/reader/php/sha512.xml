@@ -8,7 +8,7 @@
         <service id="asoc_dadatata.metadata.reader.php.sha512"
                  class="Asoc\Dadatata\Metadata\Reader\Php\Sha512"
                  public="false">
-            <tag name="asoc_dadatata.metadata_reader"/>
+            <tag name="asoc_dadatata.metadata_reader" alias="php_sha512"/>
         </service>
     </services>
 </container>

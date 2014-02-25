@@ -2,6 +2,7 @@
 
 namespace Asoc\DadatataBundle\DependencyInjection\Compiler;
 
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -9,14 +10,16 @@ class MetadataReaderPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $descriptions = $container->findTaggedServiceIds('asoc_dadatata.metadata_reader');
-        $factory = $container->getDefinition('asoc_dadatata.metadata.examiner');
+        $readerServices = $container->findTaggedServiceIds('asoc_dadatata.metadata_reader');
 
-        $collection = [];
-        foreach ($descriptions as $serviceId => $_) {
-            $collection[] = $container->getDefinition($serviceId);
+        $aliases = [];
+        foreach ($readerServices as $id => $tagAttributes) {
+            foreach ($tagAttributes as $attributes) {
+                $alias = sprintf('asoc_dadatata.metadata.reader.aliased.%s', $attributes['alias']);
+                $aliases[$alias] = new Alias($id, false);
+            }
         }
 
-        $factory->replaceArgument(1, $collection);
+        $container->addAliases($aliases);
     }
 }

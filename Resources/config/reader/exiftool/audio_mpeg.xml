@@ -8,7 +8,7 @@
         <service id="asoc_dadatata.metadata.reader.exiftool.audio_mpeg"
                  class="Asoc\Dadatata\Metadata\Reader\Exiftool\AudioMpeg"
                  public="false">
-            <tag name="asoc_dadatata.metadata_reader"/>
+            <tag name="asoc_dadatata.metadata_reader" alias="exiftool_audio_mpeg"/>
         </service>
     </services>
 </container>

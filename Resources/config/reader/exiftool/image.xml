@@ -8,7 +8,7 @@
         <service id="asoc_dadatata.metadata.reader.exiftool.image"
                  class="Asoc\Dadatata\Metadata\Reader\Exiftool\Image"
                  public="false">
-            <tag name="asoc_dadatata.metadata_reader"/>
+            <tag name="asoc_dadatata.metadata_reader" alias="exiftool_image"/>
         </service>
     </services>
 </container>

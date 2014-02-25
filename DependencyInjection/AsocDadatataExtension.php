@@ -5,6 +5,8 @@ namespace Asoc\DadatataBundle\DependencyInjection;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -31,44 +33,59 @@ class AsocDadatataExtension extends Extension
         $this->loadFilter($loader, $container);
         $this->loadWriter($loader);
 
-        $loader->load('examiner.xml');
         $loader->load('descriptor.xml');
         $loader->load('variator.xml');
+        $loader->load('type_guesser.xml');
+
+        foreach($config['examiner'] as $examinerName => $examinerConfig) {
+            $guesser = [];
+            foreach($examinerConfig['type_guesser'] as $guesserName) {
+                $guesser[] = new Reference(sprintf('asoc_dadatata.metadata.type_guesser.%s', $guesserName));
+            }
+
+            $reader = [];
+            foreach($examinerConfig['reader'] as $readerName) {
+                $reader[] = new Reference(sprintf('asoc_dadatata.metadata.reader.aliased.%s', $readerName));
+            }
+
+            $examinerId = sprintf('asoc_dadatata.%s_examiner', $examinerName);
+            $examiner = new Definition('Asoc\Dadatata\Metadata\Examiner');
+            $examiner->setArguments([
+                $guesser,
+                $reader
+            ]);
+
+            $container->setDefinition($examinerId, $examiner);
+        }
     }
 
     private function processToolsSection(LoaderInterface $loader, ContainerBuilder $container, array $config) {
-        $ffmpegBin = $config['ffmpeg'];
-        $convertBin = $config['convert'];
-        $graphicsMagickBin = $config['graphicsmagick'];
-        $exiftoolBin = $config['exiftool'];
-        $mediainfoBin = $config['mediainfo'];
-        $unoconvBin = $config['unoconv'];
-        $pdfboxBin = $config['pdfbox'];
-        $tesseractBin = $config['tesseract'];
+        if(isset($config['imagine'])) {
+            $driver = $config['imagine'];
+            if($driver !== false) {
+                $loader->load('tools/php/imagine.xml');
+                $driverId = sprintf('asoc_dadatata.tools.php.imagine.driver.%s', $driver);
 
-        if($ffmpegBin && is_executable($ffmpegBin)) {
-            $container->setParameter('asoc_dadatata.tools.ffmpeg', $ffmpegBin);
+                $driver = $container->getDefinition($driverId);
+                if(class_exists($driver->getClass())) {
+                    $container->setAlias(
+                        'asoc_dadatata.tools.php.imagine.driver',
+                        $driverId
+                    );
+                }
+                else {
+                    $container->removeAlias($driverId);
+                }
+            }
+
+            unset($config['imagine']);
         }
-        if($convertBin && is_executable($convertBin)) {
-            $container->setParameter('asoc_dadatata.tools.convert', $convertBin);
-        }
-        if($unoconvBin && is_executable($unoconvBin)) {
-            $container->setParameter('asoc_dadatata.tools.unoconv', $unoconvBin);
-        }
-        if($exiftoolBin && is_executable($exiftoolBin)) {
-            $container->setParameter('asoc_dadatata.tools.exiftool', $exiftoolBin);
-        }
-        if($mediainfoBin && is_executable($mediainfoBin)) {
-            $container->setParameter('asoc_dadatata.tools.mediainfo', $mediainfoBin);
-        }
-        if($graphicsMagickBin && is_executable($graphicsMagickBin)) {
-            $container->setParameter('asoc_dadatata.tools.graphicsmagick', $graphicsMagickBin);
-        }
-        if($pdfboxBin && is_executable($pdfboxBin)) {
-            $container->setParameter('asoc_dadatata.tools.pdfbox', $pdfboxBin);
-        }
-        if($tesseractBin && is_executable($tesseractBin)) {
-            $container->setParameter('asoc_dadatata.tools.tesseract', $tesseractBin);
+
+        // process all the CLI programs
+        foreach($config as $name => $tool) {
+            if(is_executable($tool)) {
+                $container->setParameter(sprintf('asoc_dadatata.tools.%s', $name), $tool);
+            }
         }
     }
 
@@ -85,6 +102,10 @@ class AsocDadatataExtension extends Extension
         $loader->load('reader/php/sha1.xml');
         $loader->load('reader/php/sha512.xml');
 
+        if($container->hasAlias('asoc_dadatata.tools.php.imagine.driver')) {
+            $loader->load('reader/php/imagine.xml');
+        }
+
         if($exiftool) {
             $loader->load('reader/exiftool/image.xml');
             $loader->load('reader/exiftool/pdf.xml');
@@ -93,7 +114,7 @@ class AsocDadatataExtension extends Extension
             $loader->load('reader/exiftool/audio_vorbis.xml');
             $loader->load('reader/exiftool/audio_mpeg.xml');
         }
-        else if($mediainfo) {
+        if($mediainfo) {
             $loader->load('reader/mediainfo/image.xml');
         }
     }
@@ -123,7 +144,6 @@ class AsocDadatataExtension extends Extension
         if($pdfbox) {
             $loader->load('filter/pdfbox/extract_text.xml');
         }
-
     }
 
     private function loadWriter(LoaderInterface $loader) {
