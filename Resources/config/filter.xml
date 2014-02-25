@@ -8,4 +8,10 @@
         <parameter key="asoc_dadatata.filter.aggregate.class">Asoc\Dadatata\Filter\AggregateFilter</parameter>
         <parameter key="asoc_dadatata.filter.chain.class">Asoc\Dadatata\Filter\ChainFilter</parameter>
     </parameters>
+
+    <!--<services>-->
+        <!--<service id="asoc_dadatata.filter.simple_factory"-->
+                <!--class="Asoc\DadatataBundle\Factory\SimpleFilter">-->
+        <!--</service>-->
+    <!--</services>-->
 </container>

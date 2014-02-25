@@ -6,6 +6,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
@@ -57,6 +58,29 @@ class AsocDadatataExtension extends Extension
 
             $container->setDefinition($examinerId, $examiner);
         }
+
+        foreach($config['filter'] as $filterName => $filterConfig) {
+            $filterId = sprintf('asoc_dadatata.%s_filter', $filterName);
+            $templateId = sprintf('asoc_dadatata.filter.aliased.%s', $filterConfig['type']);
+            $filter = new DefinitionDecorator($templateId);
+            if(isset($filterConfig['options'])) {
+                $filter->addMethodCall('setOptions', [$filterConfig['options']]);
+            }
+            $container->setDefinition($filterId, $filter);
+        }
+
+        foreach($config['variator'] as $variatorName => $variatorConfig) {
+            $variatorId = sprintf('asoc_dadatata.%s_variator', $variatorName);
+            $variator = new Definition('Asoc\Dadatata\SimpleVariator');
+
+            $filters = [];
+            foreach($variatorConfig['variants'] as $variant => $filterName) {
+                $filters[$variant] = new Reference(sprintf('asoc_dadatata.%s_filter', $filterName));
+            }
+
+            $variator->addArgument($filters);
+            $container->setDefinition($variatorId, $variator);
+        }
     }
 
     private function processToolsSection(LoaderInterface $loader, ContainerBuilder $container, array $config) {
@@ -83,6 +107,9 @@ class AsocDadatataExtension extends Extension
 
         // process all the CLI programs
         foreach($config as $name => $tool) {
+            if($tool === false) {
+                continue;
+            }
             if(is_executable($tool)) {
                 $container->setParameter(sprintf('asoc_dadatata.tools.%s', $name), $tool);
             }
@@ -130,6 +157,11 @@ class AsocDadatataExtension extends Extension
         $graphicsMagick = $container->hasParameter('asoc_dadatata.tools.graphicsmagick');
         $pdfbox = $container->hasParameter('asoc_dadatata.tools.pdfbox');
         $tesseract = $container->hasParameter('asoc_dadatata.tools.tesseract');
+
+        if($container->hasAlias('asoc_dadatata.tools.php.imagine.driver')) {
+            $loader->load('filter/php/imagine_thumbnail.xml');
+            $loader->load('filter/php/imagine_resize.xml');
+        }
 
         if($convert) {
             $loader->load('filter/imagemagick/thumbnail.xml');

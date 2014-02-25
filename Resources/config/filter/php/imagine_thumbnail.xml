@@ -10,9 +10,11 @@
 
     <services>
         <service id="asoc_dadatata.filter.php.imagine_thumbnail"
-                 class="Asoc\DadatataBundle\Factory\SimpleFilter">
-            <argument>%asoc_dadatata.filter.php.imagine_thumbnail.class%</argument>
+                 class="%asoc_dadatata.filter.php.imagine_thumbnail.class%"
+                 public="false"
+                 abstract="true">
             <argument type="service" id="asoc_dadatata.tools.php.imagine.driver"/>
+            <tag name="asoc_dadatata.filter" alias="php_imagine_thumbnail"/>
         </service>
     </services>
 </container>
