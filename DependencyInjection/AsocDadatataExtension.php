@@ -37,6 +37,7 @@ class AsocDadatataExtension extends Extension
         $loader->load('descriptor.xml');
         $loader->load('variator.xml');
         $loader->load('type_guesser.xml');
+        $loader->load('options.xml');
 
         foreach($config['examiner'] as $examinerName => $examinerConfig) {
             $guesser = [];
@@ -63,9 +64,16 @@ class AsocDadatataExtension extends Extension
             $filterId = sprintf('asoc_dadatata.%s_filter', $filterName);
             $templateId = sprintf('asoc_dadatata.filter.aliased.%s', $filterConfig['type']);
             $filter = new DefinitionDecorator($templateId);
+
             if(isset($filterConfig['options'])) {
-                $filter->addMethodCall('setOptions', [$filterConfig['options']]);
+                $filterOptionsId = sprintf('%s.options', $filterId);
+                $container->setParameter($filterOptionsId, $filterConfig['options']);
+                $filter->addTag('asoc_dadatata.configured_filter', [
+                    'alias' => $filterName, // name is already taken by the tag itself
+                    'type' => $filterConfig['type']
+                ]);
             }
+
             $container->setDefinition($filterId, $filter);
         }
 
