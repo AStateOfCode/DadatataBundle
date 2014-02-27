@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="asoc_dadatata.filter.jpegoptim.optimize.class">Asoc\Dadatata\Filter\Jpegoptim\Optimize</parameter>
+        <parameter key="asoc_dadatata.filter.jpegoptim.optimize.filter_options.class">Asoc\Dadatata\Filter\Jpegoptim\OptimizeOptions</parameter>
+    </parameters>
+
+    <services>
+        <service id="asoc_dadatata.filter_options.jpegoptim.optimize_options"
+                 class="%asoc_dadatata.filter.jpegoptim.optimize.filter_options.class%"
+                 public="false"
+                 abstract="true"/>
+        <service id="asoc_dadatata.filter.jpegoptim.optimize"
+                 class="%asoc_dadatata.filter.jpegoptim.optimize.class%"
+                 public="false"
+                 abstract="true">
+            <argument>%asoc_dadatata.tools.jpegoptim%</argument>
+            <tag name="asoc_dadatata.filter" alias="jpegoptim_optimize" options="asoc_dadatata.filter_options.jpegoptim.optimize_options"/>
+        </service>
+    </services>
+</container>
