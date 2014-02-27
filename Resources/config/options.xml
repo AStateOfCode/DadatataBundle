@@ -6,11 +6,16 @@
 
     <parameters>
         <parameter key="asoc_dadatata.filter_options.image_options.class">Asoc\Dadatata\Filter\ImageOptions</parameter>
+        <parameter key="asoc_dadatata.filter_options.document_image_options.class">Asoc\Dadatata\Filter\DocumentImageOptions</parameter>
     </parameters>
 
     <services>
         <service id="asoc_dadatata.filter_options.image_options"
                  class="%asoc_dadatata.filter_options.image_options.class%"
+                 public="false"
+                 abstract="true"/>
+        <service id="asoc_dadatata.filter_options.document_image_options"
+                 class="%asoc_dadatata.filter_options.document_image_options.class%"
                  public="false"
                  abstract="true"/>
     </services>

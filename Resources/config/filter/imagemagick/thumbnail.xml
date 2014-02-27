@@ -9,12 +9,12 @@
     </parameters>
 
     <services>
-        <service id="asoc_dadatata.filter.php.imagine_resize"
+        <service id="asoc_dadatata.filter.imagemagick.thumbnail"
                  class="%asoc_dadatata.filter.imagemagick.thumbnail.class%"
                  public="false"
                  abstract="true">
             <argument>%asoc_dadatata.tools.convert%</argument>
-            <tag name="asoc_dadatata.filter" alias="imagemagick_thumbnail"/>
+            <tag name="asoc_dadatata.filter" alias="imagemagick_thumbnail" options="asoc_dadatata.filter_options.image_options"/>
         </service>
     </services>
 </container>
