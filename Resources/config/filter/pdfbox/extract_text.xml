@@ -10,9 +10,11 @@
 
     <services>
         <service id="asoc_dadatata.filter.pdfbox.extract_text"
-                 class="Asoc\DadatataBundle\Factory\SimpleFilter">
-            <argument>%asoc_dadatata.filter.pdfbox.extract_text.class%</argument>
+                 class="%asoc_dadatata.filter.pdfbox.extract_text.class%"
+                 public="false"
+                 abstract="true">
             <argument>%asoc_dadatata.tools.pdfbox%</argument>
+            <tag name="asoc_dadatata.filter" alias="pdfbox_extract_text"/>
         </service>
     </services>
 </container>

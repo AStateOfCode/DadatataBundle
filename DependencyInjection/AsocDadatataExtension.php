@@ -85,7 +85,7 @@ class AsocDadatataExtension extends Extension
             }
             // pass or anything else
             else {
-                if(isset($filterConfig['options'])) {
+                if(isset($filterConfig['options']) && count($filterConfig['options']) > 0) {
                     $filterOptionsId = sprintf('%s.options', $filterId);
                     $container->setParameter($filterOptionsId, $filterConfig['options']);
                     $filterDefinition->addTag('asoc_dadatata.configured_filter', [

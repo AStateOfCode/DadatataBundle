@@ -32,6 +32,12 @@ class ConfiguredFilterPass implements CompilerPassInterface
 
             // the options parent definition
             $optionsParentParamId = sprintf('asoc_dadatata.filter.aliased.%s.options_parent', $filterType);
+
+            if(!$container->hasParameter($optionsParentParamId)) {
+                $message = sprintf('Filter does not have any options: %s (%s)', $filterName, $filterType);
+                throw new InvalidFilterOptionsException($message);
+            }
+
             $optionsParentDefinitionId = $container->getParameter($optionsParentParamId);
 
             // set by the extension, containts the options array from the config
