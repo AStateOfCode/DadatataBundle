@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="asoc_dadatata.filter.tesseract.extract_text.class">Asoc\Dadatata\Filter\Tesseract\ExtractText</parameter>
+        <parameter key="asoc_dadatata.filter.tesseract.extract_text.filter_options.class">Asoc\Dadatata\Filter\Tesseract\OcrOptions</parameter>
+    </parameters>
+
+    <services>
+        <service id="asoc_dadatata.filter.tesseract.extract_text.filter_options"
+                 class="%asoc_dadatata.filter.tesseract.extract_text.filter_options.class%"
+                 public="false"
+                 abstract="true"/>
+        <service id="asoc_dadatata.filter.tesseract.extract_text"
+                 class="%asoc_dadatata.filter.tesseract.extract_text.class%"
+                 public="false"
+                 abstract="true">
+            <argument>%asoc_dadatata.tools.tesseract%</argument>
+            <tag name="asoc_dadatata.filter" alias="tesseract_extract_text" options="asoc_dadatata.filter.tesseract.extract_text.filter_options"/>
+        </service>
+    </services>
+</container>

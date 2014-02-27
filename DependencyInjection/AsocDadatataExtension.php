@@ -211,6 +211,10 @@ class AsocDadatataExtension extends Extension
             $loader->load('filter/unoconv/convert.xml');
         }
 
+        if($tesseract) {
+            $loader->load('filter/tesseract/extract_text.xml');
+        }
+
         if($jpegoptim) {
             $loader->load('filter/jpegoptim/optimize.xml');
         }
