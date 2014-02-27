@@ -62,19 +62,40 @@ class AsocDadatataExtension extends Extension
 
         foreach($config['filter'] as $filterName => $filterConfig) {
             $filterId = sprintf('asoc_dadatata.%s_filter', $filterName);
-            $templateId = sprintf('asoc_dadatata.filter.aliased.%s', $filterConfig['type']);
-            $filter = new DefinitionDecorator($templateId);
+            $filterType = $filterConfig['type'];
 
-            if(isset($filterConfig['options'])) {
-                $filterOptionsId = sprintf('%s.options', $filterId);
-                $container->setParameter($filterOptionsId, $filterConfig['options']);
-                $filter->addTag('asoc_dadatata.configured_filter', [
-                    'alias' => $filterName, // name is already taken by the tag itself
-                    'type' => $filterConfig['type']
-                ]);
+            if($filterType === 'chain') {
+                $filterDefinition = new Definition('%asoc_dadatata.filter.chain.class%');
+            }
+            else if($filterType === 'aggregate') {
+                $filterDefinition = new Definition('%asoc_dadatata.filter.aggregate.class%');
+            }
+            else {
+                $templateId = sprintf('asoc_dadatata.filter.aliased.%s', $filterType);
+                $filterDefinition = new DefinitionDecorator($templateId);
             }
 
-            $container->setDefinition($filterId, $filter);
+            // chain and aggregate get alle the filters injected
+            if($filterType === 'chain' || $filterType === 'aggregate') {
+                $filterReferences = [];
+                foreach($filterConfig['filters'] as $innerFilterName) {
+                    $filterReferences[] = new Reference(sprintf('asoc_dadatata.%s_filter', $innerFilterName));
+                }
+                $filterDefinition->setArguments([$filterReferences]);
+            }
+            // pass or anything else
+            else {
+                if(isset($filterConfig['options'])) {
+                    $filterOptionsId = sprintf('%s.options', $filterId);
+                    $container->setParameter($filterOptionsId, $filterConfig['options']);
+                    $filterDefinition->addTag('asoc_dadatata.configured_filter', [
+                        'alias' => $filterName, // name is already taken by the tag itself
+                        'type' => $filterConfig['type']
+                    ]);
+                }
+            }
+
+            $container->setDefinition($filterId, $filterDefinition);
         }
 
         foreach($config['variator'] as $variatorName => $variatorConfig) {

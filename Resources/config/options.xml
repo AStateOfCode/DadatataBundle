@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="asoc_dadatata.filter_options.image_options.class">Asoc\Dadatata\Filter\ImageOptions</parameter>
         <parameter key="asoc_dadatata.filter_options.document_options.class">Asoc\Dadatata\Filter\DocumentOptions</parameter>
+        <parameter key="asoc_dadatata.filter_options.pass_options.class">Asoc\Dadatata\Filter\PassOptions</parameter>
         <parameter key="asoc_dadatata.filter_options.document_image_options.class">Asoc\Dadatata\Filter\DocumentImageOptions</parameter>
     </parameters>
 
@@ -17,6 +18,10 @@
                  abstract="true"/>
         <service id="asoc_dadatata.filter_options.document_options"
                  class="%asoc_dadatata.filter_options.document_options.class%"
+                 public="false"
+                 abstract="true"/>
+        <service id="asoc_dadatata.filter_options.pass_options"
+                 class="%asoc_dadatata.filter_options.pass_options.class%"
                  public="false"
                  abstract="true"/>
         <service id="asoc_dadatata.filter_options.document_image_options"
