@@ -10,7 +10,7 @@
     </parameters>
 
     <services>
-        <service id="asoc_dadatata.filter_options.jpegoptim.optimize_options"
+        <service id="asoc_dadatata.filter.jpegoptim.optimize.filter_options"
                  class="%asoc_dadatata.filter.jpegoptim.optimize.filter_options.class%"
                  public="false"
                  abstract="true"/>
