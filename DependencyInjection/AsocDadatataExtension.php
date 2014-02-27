@@ -184,6 +184,10 @@ class AsocDadatataExtension extends Extension
         if($pdfbox) {
             $loader->load('filter/pdfbox/extract_text.xml');
         }
+
+        if($unoconv) {
+            $loader->load('filter/unoconv/convert.xml');
+        }
     }
 
     private function loadWriter(LoaderInterface $loader) {
