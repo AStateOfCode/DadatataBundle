@@ -30,11 +30,18 @@ class ConfiguredFilterPass implements CompilerPassInterface
             $filterType = $tagAttributes[0]['type'];
             $filterName = $tagAttributes[0]['alias'];
 
+            // check if the filter is actually loaded
+            $filterAlias = sprintf('asoc_dadatata.filter.aliased.%s', $filterType);
+            if(!$container->hasDefinition($filterAlias)) {
+                $message = sprintf('Filter type unavailable: %s (used for %s)', $filterType, $filterName);
+                throw new InvalidFilterOptionsException($message);
+            }
+
             // the options parent definition
             $optionsParentParamId = sprintf('asoc_dadatata.filter.aliased.%s.options_parent', $filterType);
 
             if(!$container->hasParameter($optionsParentParamId)) {
-                $message = sprintf('Filter does not have any options: %s (%s)', $filterName, $filterType);
+                $message = sprintf('Filter does not have any options: %s (used for %s)', $filterType, $filterName);
                 throw new InvalidFilterOptionsException($message);
             }
 
@@ -69,7 +76,7 @@ class ConfiguredFilterPass implements CompilerPassInterface
                 $container->get($optionsDefinitionId);
             }
             catch(InvalidOptionsException $e) {
-                $message = sprintf('Filter options not valid for: %s (%s)', $filterName, $filterType);
+                $message = sprintf('Filter options not valid for: %s (used for %s)', $filterType, $filterName);
                 throw new InvalidFilterOptionsException($message, 0, $e);
             }
         }
