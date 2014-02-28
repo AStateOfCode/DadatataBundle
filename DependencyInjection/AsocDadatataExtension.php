@@ -205,6 +205,7 @@ class AsocDadatataExtension extends Extension
 
         if($pdfbox) {
             $loader->load('filter/pdfbox/extract_text.xml');
+            $loader->load('filter/pdfbox/pdf_to_image.xml');
         }
 
         if($unoconv) {
