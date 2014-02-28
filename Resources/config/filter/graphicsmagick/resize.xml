@@ -10,9 +10,11 @@
 
     <services>
         <service id="asoc_dadatata.filter.graphicsmagick.resize"
-                 class="Asoc\DadatataBundle\Factory\SimpleFilter">
-            <argument>%asoc_dadatata.filter.graphicsmagick.resize.class%</argument>
-            <argument>%asoc_dadatata.tools.graphicsmagick%</argument>
+                 class="%asoc_dadatata.filter.graphicsmagick.resize.class%"
+                 public="false"
+                 abstract="true">
+            <argument>%asoc_dadatata.tools.convert%</argument>
+            <tag name="asoc_dadatata.filter" alias="graphicsmagick_resize" options="asoc_dadatata.filter_options.image_options"/>
         </service>
     </services>
 </container>
