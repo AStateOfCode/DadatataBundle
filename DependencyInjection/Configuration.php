@@ -38,6 +38,7 @@ class Configuration implements ConfigurationInterface
         $pdfBoxBin = $finder->find('pdfbox', '/usr/bin/pdfbox');
         $tesseractBin = $finder->find('tesseract', '/usr/bin/tesseract');
         $jpegoptimBin = $finder->find('jpegoptim', '/usr/bin/jpegoptim');
+        $zbarimgBin = $finder->find('zbarimg', '/usr/bin/zbarimg');
 
         $node
             ->children()
@@ -101,6 +102,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('unoconv')->defaultValue($unoconv)->end()
                         ->scalarNode('exiftool')->defaultValue($exiftoolBin)->end()
                         ->scalarNode('jpegoptim')->defaultValue($jpegoptimBin)->end()
+                        ->scalarNode('zbarimg')->defaultValue($zbarimgBin)->end()
                     ->end()
                 ->end()
             ->end();

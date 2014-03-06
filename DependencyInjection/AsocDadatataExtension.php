@@ -187,6 +187,7 @@ class AsocDadatataExtension extends Extension
         $pdfbox = $container->hasParameter('asoc_dadatata.tools.pdfbox');
         $tesseract = $container->hasParameter('asoc_dadatata.tools.tesseract');
         $jpegoptim = $container->hasParameter('asoc_dadatata.tools.jpegoptim');
+        $zbarimg = $container->hasParameter('asoc_dadatata.tools.zbarimg');
 
         if($container->hasAlias('asoc_dadatata.tools.php.imagine.driver')) {
             $loader->load('filter/php/imagine_thumbnail.xml');
@@ -218,6 +219,10 @@ class AsocDadatataExtension extends Extension
 
         if($jpegoptim) {
             $loader->load('filter/jpegoptim/optimize.xml');
+        }
+
+        if($zbarimg) {
+            $loader->load('filter/zbar/extract.xml');
         }
     }
 
