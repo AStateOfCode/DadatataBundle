@@ -2,6 +2,9 @@
 
 namespace Asoc\DadatataBundle\DependencyInjection;
 
+use Asoc\Dadatata\Tool\PdfBox;
+use Asoc\Dadatata\Tool\Tesseract;
+use Asoc\Dadatata\Tool\Unoconv;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -34,6 +37,7 @@ class AsocDadatataExtension extends Extension
         $this->loadFilter($loader, $container);
         $this->loadWriter($loader);
 
+        $loader->load('tmpfs.xml');
         $loader->load('descriptor.xml');
         $loader->load('variator.xml');
         $loader->load('type_guesser.xml');
@@ -135,23 +139,52 @@ class AsocDadatataExtension extends Extension
         }
 
         // process all the CLI programs
-        foreach($config as $name => $tool) {
-            if($tool === false) {
+        foreach($config as $name => $path) {
+            // disabled
+            if(false === $path) {
                 continue;
             }
-            if(is_executable($tool)) {
-                $container->setParameter(sprintf('asoc_dadatata.tools.%s', $name), $tool);
+
+            // find it automatically
+            $bin = null;
+            if(null === $path) {
+                switch($name) {
+                    case 'unoconv':
+                        $tool = Unoconv::create();
+                        break;
+                    case 'tesseract':
+                        $tool = Tesseract::create();
+                        break;
+                    case 'pdfbox':
+                        $tool = PdfBox::create();
+                        break;
+                    default:
+                        $tool = null;
+                        break;
+                }
+
+                if(null !== $tool) {
+                    $bin = $tool->getBin();
+                }
+            }
+            else if(is_executable($path)) {
+                $bin = $path;
+            }
+
+            if(null !== $bin) {
+                $container->setParameter(sprintf('asoc_dadatata.tools.%s.bin', $name), $bin);
+                $loader->load(sprintf('tools/%s.xml', $name));
             }
         }
     }
 
     private function loadReader(LoaderInterface $loader, ContainerBuilder $container) {
-        $ffmpeg = $container->hasParameter('asoc_dadatata.tools.ffmpeg');
-        $convert = $container->hasParameter('asoc_dadatata.tools.convert');
-        $exiftool = $container->hasParameter('asoc_dadatata.tools.exiftool');
-        $mediainfo = $container->hasParameter('asoc_dadatata.tools.mediainfo');
-        $unoconv = $container->hasParameter('asoc_dadatata.tools.unoconv');
-        $graphicsMagick = $container->hasParameter('asoc_dadatata.tools.graphicsmagick');
+        $ffmpeg = $container->has('asoc_dadatata.tools.ffmpeg');
+        $convert = $container->has('asoc_dadatata.tools.convert');
+        $exiftool = $container->has('asoc_dadatata.tools.exiftool');
+        $mediainfo = $container->has('asoc_dadatata.tools.mediainfo');
+        $unoconv = $container->has('asoc_dadatata.tools.unoconv');
+        $graphicsMagick = $container->has('asoc_dadatata.tools.graphicsmagick');
 
         // reader that are always present
         $loader->load('reader/php/md5.xml');
@@ -178,16 +211,16 @@ class AsocDadatataExtension extends Extension
     private function loadFilter(LoaderInterface $loader, ContainerBuilder $container) {
         $loader->load('filter.xml');
 
-        $ffmpeg = $container->hasParameter('asoc_dadatata.tools.ffmpeg');
-        $convert = $container->hasParameter('asoc_dadatata.tools.convert');
-        $exiftool = $container->hasParameter('asoc_dadatata.tools.exiftool');
-        $mediainfo = $container->hasParameter('asoc_dadatata.tools.mediainfo');
-        $unoconv = $container->hasParameter('asoc_dadatata.tools.unoconv');
-        $graphicsMagick = $container->hasParameter('asoc_dadatata.tools.graphicsmagick');
-        $pdfbox = $container->hasParameter('asoc_dadatata.tools.pdfbox');
-        $tesseract = $container->hasParameter('asoc_dadatata.tools.tesseract');
-        $jpegoptim = $container->hasParameter('asoc_dadatata.tools.jpegoptim');
-        $zbarimg = $container->hasParameter('asoc_dadatata.tools.zbarimg');
+        $ffmpeg = $container->has('asoc_dadatata.tools.ffmpeg');
+        $convert = $container->has('asoc_dadatata.tools.convert');
+        $exiftool = $container->has('asoc_dadatata.tools.exiftool');
+        $mediainfo = $container->has('asoc_dadatata.tools.mediainfo');
+        $unoconv = $container->has('asoc_dadatata.tools.unoconv');
+        $graphicsMagick = $container->has('asoc_dadatata.tools.graphicsmagick');
+        $pdfbox = $container->has('asoc_dadatata.tools.pdfbox');
+        $tesseract = $container->has('asoc_dadatata.tools.tesseract');
+        $jpegoptim = $container->has('asoc_dadatata.tools.jpegoptim');
+        $zbarimg = $container->has('asoc_dadatata.tools.zbarimg');
 
         if($container->hasAlias('asoc_dadatata.tools.php.imagine.driver')) {
             $loader->load('filter/php/imagine_thumbnail.xml');

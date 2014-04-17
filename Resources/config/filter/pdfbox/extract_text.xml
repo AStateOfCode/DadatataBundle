@@ -13,7 +13,8 @@
                  class="%asoc_dadatata.filter.pdfbox.extract_text.class%"
                  public="false"
                  abstract="true">
-            <argument>%asoc_dadatata.tools.pdfbox%</argument>
+            <argument type="service" id="asoc_dadatata.tools.pdfbox"/>
+            <argument type="service" id="asoc_dadatata.tmpfs"/>
             <tag name="asoc_dadatata.filter" alias="pdfbox_extract_text"/>
         </service>
     </services>

@@ -28,18 +28,6 @@ class Configuration implements ConfigurationInterface
     }
 
     private function addToolsSection(ArrayNodeDefinition $node) {
-        $finder = new ExecutableFinder();
-        $convertBin = $finder->find('convert', '/usr/bin/convert');
-        $graphicsMagickBin = $finder->find('gm', '/usr/bin/gm');
-        $mediainfoBin = $finder->find('mediainfo', '/usr/bin/mediainfo');
-        $ffmpegBin = $finder->find('ffmpeg', '/usr/bin/ffmpeg');
-        $unoconv = $finder->find('unoconv', '/usr/bin/unoconv');
-        $exiftoolBin = $finder->find('exiftool', '/usr/bin/exiftool');
-        $pdfBoxBin = $finder->find('pdfbox', '/usr/bin/pdfbox');
-        $tesseractBin = $finder->find('tesseract', '/usr/bin/tesseract');
-        $jpegoptimBin = $finder->find('jpegoptim', '/usr/bin/jpegoptim');
-        $zbarimgBin = $finder->find('zbarimg', '/usr/bin/zbarimg');
-
         $node
             ->children()
                 ->arrayNode('examiner')
@@ -93,16 +81,16 @@ class Configuration implements ConfigurationInterface
                             ->values(['gd', 'imagick', 'gmagick', false])
                             ->defaultValue('gd')
                         ->end()
-                        ->scalarNode('convert')->defaultValue($convertBin)->end()
-                        ->scalarNode('graphicsmagick')->defaultValue($graphicsMagickBin)->end()
-                        ->scalarNode('tesseract')->defaultValue($tesseractBin)->end()
-                        ->scalarNode('pdfbox')->defaultValue($pdfBoxBin)->end()
-                        ->scalarNode('mediainfo')->defaultValue($mediainfoBin)->end()
-                        ->scalarNode('ffmpeg')->defaultValue($ffmpegBin)->end()
-                        ->scalarNode('unoconv')->defaultValue($unoconv)->end()
-                        ->scalarNode('exiftool')->defaultValue($exiftoolBin)->end()
-                        ->scalarNode('jpegoptim')->defaultValue($jpegoptimBin)->end()
-                        ->scalarNode('zbarimg')->defaultValue($zbarimgBin)->end()
+                        ->scalarNode('convert')->defaultNull()->end()
+                        ->scalarNode('graphicsmagick')->defaultNull()->end()
+                        ->scalarNode('tesseract')->defaultNull()->end()
+                        ->scalarNode('pdfbox')->defaultNull()->end()
+                        ->scalarNode('mediainfo')->defaultNull()->end()
+                        ->scalarNode('ffmpeg')->defaultNull()->end()
+                        ->scalarNode('unoconv')->defaultNull()->end()
+                        ->scalarNode('exiftool')->defaultNull()->end()
+                        ->scalarNode('jpegoptim')->defaultNull()->end()
+                        ->scalarNode('zbarimg')->defaultNull()->end()
                     ->end()
                 ->end()
             ->end();
