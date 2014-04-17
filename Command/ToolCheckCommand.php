@@ -45,7 +45,7 @@ class ToolCheckCommand extends ContainerAwareCommand {
 
     private function checkTool(OutputInterface $output, $name, ToolInterface $tool = null) {
         if(null === $tool) {
-            $output->writeln(sprintf('  %s: <warning>not available</warning>', $name));
+            $output->writeln(sprintf('  %s: <comment>not available</comment>', $name));
         }
         else {
             $output->writeln(sprintf('  %s: <info>%s</info> (%s)', $name, $tool->getVersion(), $tool->getBin()));
