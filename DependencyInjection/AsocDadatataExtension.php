@@ -9,7 +9,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
@@ -64,56 +63,8 @@ class AsocDadatataExtension extends Extension
             $container->setDefinition($examinerId, $examiner);
         }
 
-        foreach($config['filter'] as $filterName => $filterConfig) {
-            $filterId = sprintf('asoc_dadatata.%s_filter', $filterName);
-            $filterType = $filterConfig['type'];
-
-            if($filterType === 'chain') {
-                $filterDefinition = new Definition('%asoc_dadatata.filter.chain.class%');
-            }
-            else if($filterType === 'aggregate') {
-                $filterDefinition = new Definition('%asoc_dadatata.filter.aggregate.class%');
-            }
-            else {
-                $templateId = sprintf('asoc_dadatata.filter.aliased.%s', $filterType);
-                $filterDefinition = new DefinitionDecorator($templateId);
-            }
-
-            // chain and aggregate get alle the filters injected
-            if($filterType === 'chain' || $filterType === 'aggregate') {
-                $filterReferences = [];
-                foreach($filterConfig['filters'] as $innerFilterName) {
-                    $filterReferences[] = new Reference(sprintf('asoc_dadatata.%s_filter', $innerFilterName));
-                }
-                $filterDefinition->setArguments([$filterReferences]);
-            }
-            // pass or anything else
-            else {
-                if(isset($filterConfig['options']) && count($filterConfig['options']) > 0) {
-                    $filterOptionsId = sprintf('%s.options', $filterId);
-                    $container->setParameter($filterOptionsId, $filterConfig['options']);
-                    $filterDefinition->addTag('asoc_dadatata.configured_filter', [
-                        'alias' => $filterName, // name is already taken by the tag itself
-                        'type' => $filterConfig['type']
-                    ]);
-                }
-            }
-
-            $container->setDefinition($filterId, $filterDefinition);
-        }
-
-        foreach($config['variator'] as $variatorName => $variatorConfig) {
-            $variatorId = sprintf('asoc_dadatata.%s_variator', $variatorName);
-            $variator = new Definition('Asoc\Dadatata\SimpleVariator');
-
-            $filters = [];
-            foreach($variatorConfig['variants'] as $variant => $filterName) {
-                $filters[$variant] = new Reference(sprintf('asoc_dadatata.%s_filter', $filterName));
-            }
-
-            $variator->addArgument($filters);
-            $container->setDefinition($variatorId, $variator);
-        }
+        $container->setParameter('asoc_dadatata.filter.config', $config['filter']);
+        $container->setParameter('asoc_dadatata.variator.config', $config['variator']);
     }
 
     private function processToolsSection(LoaderInterface $loader, ContainerBuilder $container, array $config) {

@@ -2,7 +2,6 @@
 
 namespace Asoc\DadatataBundle;
 
-use Asoc\DadatataBundle\DependencyInjection\Compiler\ConfiguredFilterPass;
 use Asoc\DadatataBundle\DependencyInjection\Compiler\FilterPass;
 use Asoc\DadatataBundle\DependencyInjection\Compiler\MetadataReaderPass;
 use Asoc\DadatataBundle\DependencyInjection\Compiler\MetadataWriterPass;
@@ -16,6 +15,5 @@ class AsocDadatataBundle extends Bundle
         $container->addCompilerPass(new MetadataReaderPass());
         $container->addCompilerPass(new MetadataWriterPass());
         $container->addCompilerPass(new FilterPass());
-        $container->addCompilerPass(new ConfiguredFilterPass());
     }
 }
