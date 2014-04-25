@@ -10,7 +10,9 @@
 
     <services>
         <service id="asoc_dadatata.tmpfs"
-                 class="%asoc_dadatata.tmpfs.class%">
+                 class="%asoc_dadatata.tmpfs.class%"
+                 factory-class="Neutron\TemporaryFilesystem\Manager"
+                 factory-method="create">
         </service>
     </services>
 </container>
