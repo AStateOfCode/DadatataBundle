@@ -214,7 +214,8 @@ class FilterPass implements CompilerPassInterface
             $filterAlias = sprintf('asoc_dadatata.filter.aliased.%s', $filterType);
             if (!$container->hasDefinition($filterAlias)) {
                 $message = sprintf('Filter type unavailable: %s (used for %s)', $filterType, $filterName);
-                throw new InvalidFilterOptionsException($message);
+                //throw new InvalidFilterOptionsException($message);
+                continue;
             }
 
             // the options parent definition
@@ -222,7 +223,8 @@ class FilterPass implements CompilerPassInterface
 
             if (!$container->hasParameter($optionsParentParamId)) {
                 $message = sprintf('Filter does not have any options: %s (used for %s)', $filterType, $filterName);
-                throw new InvalidFilterOptionsException($message);
+                //throw new InvalidFilterOptionsException($message);
+                continue;
             }
 
             $optionsParentDefinitionId = $container->getParameter($optionsParentParamId);
@@ -230,6 +232,7 @@ class FilterPass implements CompilerPassInterface
             if (!$container->hasDefinition($optionsParentDefinitionId)) {
                 $message = sprintf('Filter not loaded: %s (used for %s)', $filterType, $filterName);
                 throw new InvalidFilterOptionsException($message);
+                continue;
             }
 
             // set by the extension, containts the options array from the config
@@ -261,7 +264,8 @@ class FilterPass implements CompilerPassInterface
                 $container->get($optionsDefinitionId);
             } catch (InvalidOptionsException $e) {
                 $message = sprintf('Filter options not valid for: %s (used for %s)', $filterType, $filterName);
-                throw new InvalidFilterOptionsException($message, 0, $e);
+                //throw new InvalidFilterOptionsException($message, 0, $e);
+                continue;
             }
         }
     }
