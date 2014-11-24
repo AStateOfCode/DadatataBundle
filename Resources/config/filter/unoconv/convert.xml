@@ -15,7 +15,8 @@
                  abstract="true">
             <argument type="service" id="asoc_dadatata.tools.unoconv"/>
             <argument type="service" id="asoc_dadatata.tmpfs"/>
-            <tag name="asoc_dadatata.filter" alias="unoconv_convert" options="asoc_dadatata.filter_options.document_options"/>
+            <tag name="asoc_dadatata.filter" alias="unoconv_convert"
+                 options="asoc_dadatata.filter_options.document_options"/>
         </service>
     </services>
 </container>

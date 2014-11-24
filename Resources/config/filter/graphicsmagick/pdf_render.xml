@@ -14,7 +14,8 @@
                  public="false"
                  abstract="true">
             <argument>%asoc_dadatata.tools.convert%</argument>
-            <tag name="asoc_dadatata.filter" alias="graphicsmagick_pdf_render" options="asoc_dadatata.filter_options.document_image_options"/>
+            <tag name="asoc_dadatata.filter" alias="graphicsmagick_pdf_render"
+                 options="asoc_dadatata.filter_options.document_image_options"/>
         </service>
     </services>
 </container>

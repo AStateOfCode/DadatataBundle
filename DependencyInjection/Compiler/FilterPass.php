@@ -14,6 +14,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * Used to register filter under a specific alias. This is done to support filters outside of the asoc_dadatata space.
  *
  * Class FilterPass
+ *
  * @package Asoc\DadatataBundle\DependencyInjection\Compiler
  */
 class FilterPass implements CompilerPassInterface
@@ -34,7 +35,7 @@ class FilterPass implements CompilerPassInterface
                         'asoc_dadatata.filter.aliased.%s.options_parent',
                         $attributes['alias']
                     );
-                    $optionsClass = $attributes['options'];
+                    $optionsClass        = $attributes['options'];
                     $container->setParameter($optionsClassParamId, $optionsClass);
                 }
             }
@@ -54,7 +55,7 @@ class FilterPass implements CompilerPassInterface
 
     private function validateFilter(array $config, ContainerBuilder $container)
     {
-        $toBeRemoved = [];
+        $toBeRemoved        = [];
         $checkFilterService = function ($currentFilterId, Definition $filterDefinition) use (
             &$container,
             &$checkFilterService,
@@ -116,7 +117,7 @@ class FilterPass implements CompilerPassInterface
     private function processDirectFilter(array $config, ContainerBuilder $container)
     {
         foreach ($config as $filterName => $filterConfig) {
-            $filterId = sprintf('asoc_dadatata.%s_filter', $filterName);
+            $filterId   = sprintf('asoc_dadatata.%s_filter', $filterName);
             $filterType = $filterConfig['type'];
 
             if ('chain' === $filterType || 'aggregate' === $filterType) {
@@ -143,7 +144,7 @@ class FilterPass implements CompilerPassInterface
     private function processNestedFilter(array $config, ContainerBuilder $container)
     {
         foreach ($config as $filterName => $filterConfig) {
-            $filterId = sprintf('asoc_dadatata.%s_filter', $filterName);
+            $filterId   = sprintf('asoc_dadatata.%s_filter', $filterName);
             $filterType = $filterConfig['type'];
 
             if ('chain' !== $filterType && 'aggregate' !== $filterType) {
@@ -164,7 +165,7 @@ class FilterPass implements CompilerPassInterface
 
             $filterReferences = [];
             foreach ($filterConfig['filters'] as $innerFilterName) {
-                $innerFilterId = sprintf('asoc_dadatata.%s_filter', $innerFilterName);
+                $innerFilterId      = sprintf('asoc_dadatata.%s_filter', $innerFilterName);
                 $filterReferences[] = new Reference($innerFilterId);
             }
             $filterDefinition->setArguments([$filterReferences]);
@@ -177,7 +178,7 @@ class FilterPass implements CompilerPassInterface
     {
         foreach ($config as $variatorName => $variatorConfig) {
             $variatorId = sprintf('asoc_dadatata.%s_variator', $variatorName);
-            $variator = new Definition('Asoc\Dadatata\SimpleVariator');
+            $variator   = new Definition('Asoc\Dadatata\SimpleVariator');
 
             $filters = [];
             foreach ($variatorConfig['variants'] as $variant => $filterName) {
@@ -198,7 +199,7 @@ class FilterPass implements CompilerPassInterface
     private function processFilterOptions(array $config, ContainerBuilder $container)
     {
         foreach ($config as $filterName => $filterConfig) {
-            $filterId = sprintf('asoc_dadatata.%s_filter', $filterName);
+            $filterId   = sprintf('asoc_dadatata.%s_filter', $filterName);
             $filterType = $filterConfig['type'];
 
             if (!$container->hasDefinition($filterId)) {
@@ -237,11 +238,11 @@ class FilterPass implements CompilerPassInterface
 
             // set by the extension, containts the options array from the config
             $filterOptionsParamId = sprintf('%s.options', $filterId);
-            $filterOptions = $container->getParameter($filterOptionsParamId);
+            $filterOptions        = $container->getParameter($filterOptionsParamId);
 
             // build the options object definition
             $optionsDefinitionId = $filterOptionsParamId;
-            $optionsDefinition = new DefinitionDecorator($optionsParentDefinitionId);
+            $optionsDefinition   = new DefinitionDecorator($optionsParentDefinitionId);
             $optionsDefinition->setPublic(false);
             $optionsDefinition->addArgument($filterOptions);
 

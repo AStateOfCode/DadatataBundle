@@ -15,7 +15,7 @@ class MetadataReaderPass implements CompilerPassInterface
         $aliases = [];
         foreach ($readerServices as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
-                $alias = sprintf('asoc_dadatata.metadata.reader.aliased.%s', $attributes['alias']);
+                $alias           = sprintf('asoc_dadatata.metadata.reader.aliased.%s', $attributes['alias']);
                 $aliases[$alias] = new Alias($id, false);
             }
         }

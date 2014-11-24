@@ -10,7 +10,7 @@ class MetadataWriterPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $descriptions = $container->findTaggedServiceIds('asoc_dadatata.metadata_writer');
-        $factory = $container->getDefinition('asoc_dadatata.metadata.descriptor');
+        $factory      = $container->getDefinition('asoc_dadatata.metadata.descriptor');
 
         $collection = [];
         foreach ($descriptions as $serviceId => $_) {

@@ -5,7 +5,6 @@ namespace Asoc\DadatataBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Process\ExecutableFinder;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
@@ -20,14 +19,16 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('asoc_dadatata');
+        $rootNode    = $treeBuilder->root('asoc_dadatata');
 
         $this->addToolsSection($rootNode);
 
         return $treeBuilder;
     }
 
-    private function addToolsSection(ArrayNodeDefinition $node) {
+    private function addToolsSection(ArrayNodeDefinition $node)
+    {
+        // @formatter:off
         $node
             ->children()
                 ->arrayNode('examiner')
@@ -94,5 +95,6 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+        // @formatter:on
     }
 }

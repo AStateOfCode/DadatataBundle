@@ -19,7 +19,8 @@
                  public="false"
                  abstract="true">
             <argument>%asoc_dadatata.tools.jpegoptim%</argument>
-            <tag name="asoc_dadatata.filter" alias="jpegoptim_optimize" options="asoc_dadatata.filter_options.jpegoptim.optimize_options"/>
+            <tag name="asoc_dadatata.filter" alias="jpegoptim_optimize"
+                 options="asoc_dadatata.filter_options.jpegoptim.optimize_options"/>
         </service>
     </services>
 </container>

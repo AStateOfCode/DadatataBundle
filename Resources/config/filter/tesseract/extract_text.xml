@@ -20,7 +20,8 @@
                  abstract="true">
             <argument type="service" id="asoc_dadatata.tools.tesseract"/>
             <argument type="service" id="asoc_dadatata.tmpfs"/>
-            <tag name="asoc_dadatata.filter" alias="tesseract_extract_text" options="asoc_dadatata.filter.tesseract.extract_text.filter_options"/>
+            <tag name="asoc_dadatata.filter" alias="tesseract_extract_text"
+                 options="asoc_dadatata.filter.tesseract.extract_text.filter_options"/>
         </service>
     </services>
 </container>

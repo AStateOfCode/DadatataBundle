@@ -15,7 +15,8 @@
                  abstract="true">
             <argument type="service" id="asoc_dadatata.tools.pdfbox"/>
             <argument type="service" id="asoc_dadatata.tmpfs"/>
-            <tag name="asoc_dadatata.filter" alias="pdfbox_pdf_to_image" options="asoc_dadatata.filter_options.document_image_options"/>
+            <tag name="asoc_dadatata.filter" alias="pdfbox_pdf_to_image"
+                 options="asoc_dadatata.filter_options.document_image_options"/>
         </service>
     </services>
 </container>
