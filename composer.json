@@ -19,6 +19,6 @@
         "phpunit/phpunit": "~3.7"
     },
     "require": {
-        "asoc/dadatata": "0.2.0"
+        "asoc/dadatata": "0.2.*"
     }
 }
