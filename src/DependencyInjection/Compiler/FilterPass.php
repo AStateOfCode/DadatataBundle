@@ -238,13 +238,16 @@ class FilterPass implements CompilerPassInterface
 
             // set by the extension, containts the options array from the config
             $filterOptionsParamId = sprintf('%s.options', $filterId);
-            $filterOptions        = $container->getParameter($filterOptionsParamId);
+            $optionsDefinitionId = $filterOptionsParamId;
 
             // build the options object definition
-            $optionsDefinitionId = $filterOptionsParamId;
             $optionsDefinition   = new DefinitionDecorator($optionsParentDefinitionId);
             $optionsDefinition->setPublic(false);
-            $optionsDefinition->addArgument($filterOptions);
+
+            if ($container->hasParameter($filterOptionsParamId)) {
+                $filterOptions = $container->getParameter($filterOptionsParamId);
+                $optionsDefinition->addArgument($filterOptions);
+            }
 
             // to create the object here, for some reason, we need to set the class of the options definition
             // therefore, we get the parent options definition and read the class directly
