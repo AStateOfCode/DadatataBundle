@@ -14,6 +14,7 @@
                  public="false"
                  abstract="true">
             <argument type="service" id="asoc_dadatata.tools.php.imagine.driver"/>
+            <argument type="service" id="asoc_dadatata.tmpfs"/>
             <tag name="asoc_dadatata.filter" alias="php_imagine_thumbnail"
                  options="asoc_dadatata.filter_options.thumbnail_options"/>
         </service>
