@@ -3,8 +3,7 @@
 namespace Asoc\DadatataBundle\DependencyInjection;
 
 use Asoc\Dadatata\Tool\PdfBox;
-use Asoc\Dadatata\Tool\Tesseract;
-use Asoc\Dadatata\Tool\Unoconv;
+use Asoc\Dadatata\ToolInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -92,40 +91,46 @@ class AsocDadatataExtension extends Extension
         }
 
         // process all the CLI programs
-        foreach ($config as $name => $path) {
-            // disabled
-            if (false === $path) {
+        foreach ($config as $name => $value) {
+            // completely disabled
+            if (false === $value) {
                 continue;
             }
 
-            // find it automatically
             $bin = null;
-            if (null === $path) {
-                switch ($name) {
-                    case 'unoconv':
-                        $tool = Unoconv::create();
-                        break;
-                    case 'tesseract':
-                        $tool = Tesseract::create();
-                        break;
-                    case 'pdfbox':
-                        $tool = PdfBox::create();
-                        break;
-                    default:
-                        $tool = null;
-                        break;
-                }
 
-                if (null !== $tool) {
+            // load tool definition
+            try {
+                $loader->load(sprintf('tools/%s.xml', $name));
+            }
+            catch(\InvalidArgumentException $e) {
+                // no tool class yet, still defined the old way (paths to an executable only)
+                continue;
+            }
+
+            // no specific path specified, find the executable
+            if (null === $value) {
+                $toolDefinitionId = sprintf('asoc_dadatata.tools.%s', $name);
+                $toolDefinition   = $container->getDefinition($toolDefinitionId);
+                $toolClass        = $toolDefinition->getClass();
+
+                // all tool classes should implement ToolInterface
+                /** @var ToolInterface $toolClass */
+                $tool = $toolClass::create();
+
+                // tool executable was not found so we can remove the service
+                if (null === $tool) {
+                    $container->removeDefinition($toolDefinitionId);
+                } else {
                     $bin = $tool->getBin();
                 }
-            } else if (is_executable($path)) {
-                $bin = $path;
+            } // specific path specified, check if it is an executable
+            else if (is_executable($value)) {
+                $bin = $value;
             }
 
             if (null !== $bin) {
                 $container->setParameter(sprintf('asoc_dadatata.tools.%s.bin', $name), $bin);
-                $loader->load(sprintf('tools/%s.xml', $name));
             }
         }
     }
@@ -133,7 +138,7 @@ class AsocDadatataExtension extends Extension
     private function loadReader(LoaderInterface $loader, ContainerBuilder $container)
     {
         $ffmpeg         = $container->has('asoc_dadatata.tools.ffmpeg');
-        $convert        = $container->has('asoc_dadatata.tools.convert');
+        $convert        = $container->has('asoc_dadatata.tools.image_magick_convert');
         $exiftool       = $container->has('asoc_dadatata.tools.exiftool');
         $mediainfo      = $container->has('asoc_dadatata.tools.mediainfo');
         $unoconv        = $container->has('asoc_dadatata.tools.unoconv');
@@ -166,7 +171,7 @@ class AsocDadatataExtension extends Extension
         $loader->load('filter.xml');
 
         $ffmpeg         = $container->has('asoc_dadatata.tools.ffmpeg');
-        $convert        = $container->has('asoc_dadatata.tools.convert');
+        $convert        = $container->has('asoc_dadatata.tools.image_magick_convert');
         $exiftool       = $container->has('asoc_dadatata.tools.exiftool');
         $mediainfo      = $container->has('asoc_dadatata.tools.mediainfo');
         $unoconv        = $container->has('asoc_dadatata.tools.unoconv');
@@ -185,6 +190,7 @@ class AsocDadatataExtension extends Extension
             $loader->load('filter/imagemagick/thumbnail.xml');
             $loader->load('filter/imagemagick/resize.xml');
             $loader->load('filter/imagemagick/pdf_render.xml');
+            $loader->load('filter/imagemagick/convert_image.xml');
         }
 
         if ($ffmpeg) {

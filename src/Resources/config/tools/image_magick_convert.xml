@@ -5,13 +5,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="asoc_dadatata.filter.imagemagick.thumbnail"
-                 class="Asoc\Dadatata\Filter\ImageMagick\Thumbnail"
-                 public="false"
-                 abstract="true">
+        <service id="asoc_dadatata.tools.image_magick_convert"
+                 class="Asoc\Dadatata\Tool\ImageMagickConvert">
             <argument>%asoc_dadatata.tools.image_magick_convert.bin%</argument>
-            <tag name="asoc_dadatata.filter" alias="imagemagick_thumbnail"
-                 options="asoc_dadatata.filter_options.image_options"/>
         </service>
     </services>
 </container>
