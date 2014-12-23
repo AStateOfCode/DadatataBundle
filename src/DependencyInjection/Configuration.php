@@ -82,7 +82,7 @@ class Configuration implements ConfigurationInterface
                             ->values(['gd', 'imagick', 'gmagick', false])
                             ->defaultValue('gd')
                         ->end()
-                        ->scalarNode('convert')->defaultNull()->end()
+                        ->scalarNode('image_magick_convert')->defaultNull()->end()
                         ->scalarNode('graphicsmagick')->defaultNull()->end()
                         ->scalarNode('tesseract')->defaultNull()->end()
                         ->scalarNode('pdfbox')->defaultNull()->end()

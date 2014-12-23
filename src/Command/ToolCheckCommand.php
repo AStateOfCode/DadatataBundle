@@ -11,12 +11,12 @@ class ToolCheckCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('dadatata:tool-check')
-            ->setDescription('Check available tools');
+            ->setDescription('Check available tools.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $tools     = ['unoconv', 'tesseract', 'pdfbox'];
+        $tools     = ['unoconv', 'tesseract', 'pdfbox', 'image_magick_convert'];
         $container = $this->getContainer();
 
         $output->writeln('Tools installed:');

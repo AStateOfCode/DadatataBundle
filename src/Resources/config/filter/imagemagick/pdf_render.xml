@@ -4,16 +4,12 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="asoc_dadatata.filter.imagemagick.pdf_render.class">Asoc\Dadatata\Filter\ImageMagick\PdfRender</parameter>
-    </parameters>
-
     <services>
         <service id="asoc_dadatata.filter.imagemagick.pdf_render"
-                 class="%asoc_dadatata.filter.imagemagick.pdf_render.class%"
+                 class="Asoc\Dadatata\Filter\ImageMagick\PdfRender"
                  public="false"
                  abstract="true">
-            <argument>%asoc_dadatata.tools.convert%</argument>
+            <argument>%asoc_dadatata.tools.image_magick_convert.bin%</argument>
             <tag name="asoc_dadatata.filter" alias="imagemagick_pdf_render"
                  options="asoc_dadatata.filter_options.document_image_options"/>
         </service>
