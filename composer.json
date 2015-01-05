@@ -15,7 +15,7 @@
     }
   },
   "require": {
-    "asoc/dadatata": "dev-master",
+    "asoc/dadatata": "0.3.*",
     "symfony/dependency-injection": "~2.4"
   }
 }
