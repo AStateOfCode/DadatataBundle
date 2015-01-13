@@ -16,7 +16,7 @@ class ToolCheckCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $tools     = ['unoconv', 'tesseract', 'pdfbox', 'image_magick_convert'];
+        $tools     = ['unoconv', 'tesseract', 'pdfbox', 'image_magick_convert', 'soffice'];
         $container = $this->getContainer();
 
         $output->writeln('Tools installed:');
