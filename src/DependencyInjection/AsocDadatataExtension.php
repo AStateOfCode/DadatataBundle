@@ -102,8 +102,7 @@ class AsocDadatataExtension extends Extension
             // load tool definition
             try {
                 $loader->load(sprintf('tools/%s.xml', $name));
-            }
-            catch(\InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException $e) {
                 // no tool class yet, still defined the old way (paths to an executable only)
                 continue;
             }
@@ -180,6 +179,7 @@ class AsocDadatataExtension extends Extension
         $tesseract      = $container->has('asoc_dadatata.tools.tesseract');
         $jpegoptim      = $container->has('asoc_dadatata.tools.jpegoptim');
         $zbarimg        = $container->has('asoc_dadatata.tools.zbarimg');
+        $soffice        = $container->has('asoc_dadatata.tools.soffice');
 
         if ($container->hasAlias('asoc_dadatata.tools.php.imagine.driver')) {
             $loader->load('filter/php/imagine_thumbnail.xml');
@@ -216,6 +216,10 @@ class AsocDadatataExtension extends Extension
 
         if ($zbarimg) {
             $loader->load('filter/zbar/extract.xml');
+        }
+
+        if ($soffice) {
+            $loader->load('filter/libreoffice/convert.xml');
         }
     }
 
