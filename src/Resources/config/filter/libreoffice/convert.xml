@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="asoc_dadatata.filter.libreoffice.convert.class">Asoc\Dadatata\Filter\LibreOffice\Convert</parameter>
+    </parameters>
+
+    <services>
+        <service id="asoc_dadatata.filter.libreoffice.convert"
+                 class="%asoc_dadatata.filter.libreoffice.convert.class%"
+                 public="false"
+                 abstract="true">
+            <argument type="service" id="asoc_dadatata.tools.soffice"/>
+            <argument type="service" id="asoc_dadatata.tmpfs"/>
+            <tag name="asoc_dadatata.filter" alias="libreoffice_convert"
+                 options="asoc_dadatata.filter_options.document_options"/>
+        </service>
+    </services>
+</container>

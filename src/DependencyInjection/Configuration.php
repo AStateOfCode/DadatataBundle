@@ -92,6 +92,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('exiftool')->defaultNull()->end()
                         ->scalarNode('jpegoptim')->defaultNull()->end()
                         ->scalarNode('zbarimg')->defaultNull()->end()
+                        ->scalarNode('soffice')->defaultNull()->end()
                     ->end()
                 ->end()
             ->end();
